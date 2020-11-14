@@ -1,7 +1,7 @@
 from django.utils import timezone
 
 from django.db import models
-from django.utils.crypto import random
+import random
 from .company_data import *
 
 from .models import BaseModel

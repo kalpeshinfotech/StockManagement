@@ -153,12 +153,12 @@ class Dashboard(View):
         from .amc_task import amcAlert, amcAlertMonth, amcSms
         # print(amcSms())
         print(f"{request} this is request")
-        amc_alert = amcAlert(request)
-        this_month_amc = amcAlertMonth(request)
-        context.update({'this_month_amc': this_month_amc})
-        # print(amc_alert)
-        context.update({'amc_alert': amc_alert})
-        print(context)
+        # amc_alert = amcAlert(request)
+        # this_month_amc = amcAlertMonth(request)
+        # context.update({'this_month_amc': this_month_amc})
+        # # print(amc_alert)
+        # context.update({'amc_alert': amc_alert})
+        # print(context)
         # print(timezone.now().time())
         return context
 
@@ -179,8 +179,11 @@ class Dashboard(View):
             user = authenticate(request, username=username, password=password)
             if user:
                 a = login(request, user)
-                company = list(CompanyDetail.objects.filter(employee__user=request.user.id).values('pk'))
-                request.session['company_id'] = company[0]['pk']
+                employee = employee_data.Employee.objects.get(user=request.user)
+                # company = list(CompanyDetail.objects.filter(employee__user=request.user.id).values('pk'))
+                # print(company)
+                request.session['company_id'] = employee.company.pk
+                print(employee.company.pk)
                 employee_photo = list(employee_data.Employee.objects.filter(user_id=request.user.id,
                                                                             company_id=request.session.get('company_id')
                                                                             ).annotate(
